@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+  <title>Weather Map App</title>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+  <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,700'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.css" />
+  <link rel="stylesheet" href="./assets/app.css"/>
+
+
+</head>
+
+<body ng-app="Weather-Map" ng-controller="MapDisplayController as display" style="height: 100%;width: 100%">
+<div layout="row" layout-align="center center" style="height: 100%">
+  <div layout="column" flex="30" style="height: 100%">
+    <md-tabs md-selected="0" md-border-bottom md-autoselect>
+      <md-tab label="Search City">
+       <div layout-align="center center" layout="row">
+         <input type="text" class="inputWidth" id="mapAutocomplete" ng-model="display.city.name" googleplace/>
+       </div>
+        <div layout-align="center center" layout="row"> <md-button class="md-raised md-inked" ng-click="display.getWeatherFromCityName(display.city.name)">What's The Weather Like</md-button></div>
+      </md-tab>
+      <md-tab label="Draggable" md-on-select="display.draggableMarker()">
+       <div layout-align="center center" layout="row"> <md-button class="md-raised md-inked" ng-click="display.checkMarker()">Check</md-button></div>
+      </md-tab>
+      <md-tab label="Coming Soon">
+        <div>Awesome</div>
+      </md-tab>
+    </md-tabs>
+  </div>
+
+    <div layout="column" style="height: 100%" flex="70">
+      <div id="map"></div>
+    </div>
+
+
+</div>
+
+</body>
+
+<script>
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.397, lng: 150.644},
+            zoom: 8
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGDpeLzwVpzgOhUMkVo0N7uRqXI-Q_V0o&libraries=places&callback=initMap" async defer></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+<script src="src/app.js"></script>
+<script src="src/AppController.js"></script>
+<script src="src/dataFactory.js"></script>
+
+</html>
