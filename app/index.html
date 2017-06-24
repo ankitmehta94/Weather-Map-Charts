@@ -9,38 +9,21 @@
   <title>Weather Map App</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
   <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,700'>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.5/nv.d3.min.css" />
   <link rel="stylesheet" href="./assets/app.css"/>
-
-
+  <link rel="stylesheet" href="./assets/weather_icons.css"/>
 </head>
-
 <body ng-app="Weather-Map" ng-controller="MapDisplayController as display" style="height: 100%;width: 100%">
-<div layout="row" layout-align="center center" style="height: 100%">
-  <div layout="column" flex="30" style="height: 100%">
-    <md-tabs md-selected="0" md-border-bottom md-autoselect>
-      <md-tab label="Search City">
-       <div layout-align="center center" layout="row">
-         <input type="text" class="inputWidth" id="mapAutocomplete" ng-model="display.city.name" googleplace/>
-       </div>
-        <div layout-align="center center" layout="row"> <md-button class="md-raised md-inked" ng-click="display.getWeatherFromCityName(display.city.name)">What's The Weather Like</md-button></div>
-      </md-tab>
-      <md-tab label="Draggable" md-on-select="display.draggableMarker()">
-       <div layout-align="center center" layout="row"> <md-button class="md-raised md-inked" ng-click="display.checkMarker()">Check</md-button></div>
-      </md-tab>
-      <md-tab label="Coming Soon">
-        <div>Awesome</div>
-      </md-tab>
-    </md-tabs>
+  <div class="ui labeled icon left inline vertical very wide sidebar menu uncover" id="sideNav">
+    <input type="text" class="inputWidth" id="mapAutocomplete" ng-model="display.city.name" googleplace />
+    <button  class="ui button" ng-click="display.getWeatherFromCityName(display.city.name)" >What's The Weather Like</button>
+    <div id="chartCard" class="ui card"><nvd3 options="options" data="data"></nvd3></div>
   </div>
-
-    <div layout="column" style="height: 100%" flex="70">
-      <div id="map"></div>
-    </div>
-
-
-</div>
-
+  <div class="pusher " style="height: 100%">
+    <button  class="ui button" ng-click="display.toggleSideNav()">Toggle</button>
+    <div id="map"></div>
+  </div>
 </body>
 
 <script>
@@ -53,11 +36,12 @@
     }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGDpeLzwVpzgOhUMkVo0N7uRqXI-Q_V0o&libraries=places&callback=initMap" async defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.5/nv.d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.9/angular-nvd3.min.js"></script>
 <script src="src/app.js"></script>
 <script src="src/AppController.js"></script>
 <script src="src/dataFactory.js"></script>

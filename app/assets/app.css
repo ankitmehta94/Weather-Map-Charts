@@ -6,6 +6,33 @@
   height: 50px;
   font-size: 16px;
 }
+.info-box {
+  min-height: 100px;
+  min-width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+.night-colors{
+  color: #56007c;
+}
+.font-heavy{
+  font-size: 14px;
+  font-weight: bold;
+}
+.font-light{
+  font-size: 12px;
+  font-weight: 400;
+}
+.flex-row-start{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.flex-row-space-between{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 #map{
   height: 100%;
 }
@@ -16,8 +43,18 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
-
+#chartCard{
+width: 99%;
+  margin-top: 2%;
+}
 /* Toolbar area */
+.ui[class*="very wide"].left.sidebar, .ui[class*="very wide"].right.sidebar{
+  width: 600px!important;
+}
+.ui.visible[class*="very wide"].left.sidebar~.fixed, .ui.visible[class*="very wide"].left.sidebar~.pusher{
+  webkit-transform: translate3d(600px,0,0)!important;
+  transform: translate3d(600px,0,0)!important;
+}
 
 .menu {
   background-color: transparent;

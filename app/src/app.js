@@ -1,6 +1,4 @@
 // Load libraries
 angular
-    .module('Weather-Map', [
-        'ngMaterial'
-    ]);
+    .module('Weather-Map', ['nvd3']);
 //console.log(app);
