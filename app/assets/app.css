@@ -36,6 +36,9 @@
 #map{
   height: 100%;
 }
+.width100cent{
+  width: 100%!important;
+}
 html, body {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
@@ -45,6 +48,13 @@ html, body {
 }
 #chartCard{
 width: 99%;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+  margin-top: 2%;
+}
+#infoCard{
+width: 99%;
+  height: 100%;
   margin-top: 2%;
 }
 /* Toolbar area */

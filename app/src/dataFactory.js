@@ -17,6 +17,15 @@ angular.module('Weather-Map').factory('dataFactory',['$http',function ($http) {
             return null;
         });
     };
+    dataFactory.wikiByCityName = function(cityName) {
+        if(cityName){
+            var url = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles='+cityName+'&origin=*';
+            return $.getJSON(url, function(data){
+                return data.query;
+            });
+        }
+
+    };
     dataFactory.sixteenDayForecastByCityName = function(cityName) {
 
         return $http({
@@ -56,5 +65,6 @@ angular.module('Weather-Map').factory('dataFactory',['$http',function ($http) {
             return null;
         });
     };
+
    return dataFactory;
 }]);

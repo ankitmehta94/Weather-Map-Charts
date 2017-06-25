@@ -5,6 +5,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
     display.selctedNav = 'Normal';
     display.city = {name:''};
     var marker = null;
+    $scope.placeInfo = '';
     display.singleDayWeatherData = {};
     var infowindow =null;
     var iconObj = {
@@ -15,12 +16,13 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
         Clear:'<svg class="sunshine" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"> <path class="sun-full" d="M256,144c-61.8,0-112,50.2-112,112s50.2,112,112,112s112-50.2,112-112S317.8,144,256,144z M256,336 c-44.2,0-80-35.8-80-80s35.8-80,80-80s80,35.8,80,80S300.2,336,256,336z" /> <path class="sun-ray-eight" d="M131.6,357.8l-22.6,22.6c-6.2,6.2-6.2,16.4,0,22.6s16.4,6.2,22.6,0l22.6-22.6c6.2-6.3,6.2-16.4,0-22.6 C147.9,351.6,137.8,351.6,131.6,357.8z" /> <path class="sun-ray-seven" d="M256,400c-8.8,0-16,7.2-16,16v32c0,8.8,7.2,16,16,16s16-7.2,16-16v-32C272,407.2,264.8,400,256,400z" /> <path class="sun-ray-six" d="M380.5,357.8c-6.3-6.2-16.4-6.2-22.6,0c-6.3,6.2-6.3,16.4,0,22.6l22.6,22.6c6.2,6.2,16.4,6.2,22.6,0 s6.2-16.4,0-22.6L380.5,357.8z" /> <path class="sun-ray-five" d="M448,240h-32c-8.8,0-16,7.2-16,16s7.2,16,16,16h32c8.8,0,16-7.2,16-16S456.8,240,448,240z" /> <path class="sun-ray-four" d="M380.4,154.2l22.6-22.6c6.2-6.2,6.2-16.4,0-22.6s-16.4-6.2-22.6,0l-22.6,22.6c-6.2,6.2-6.2,16.4,0,22.6 C364.1,160.4,374.2,160.4,380.4,154.2z" /> <path class="sun-ray-three" d="M256,112c8.8,0,16-7.2,16-16V64c0-8.8-7.2-16-16-16s-16,7.2-16,16v32C240,104.8,247.2,112,256,112z" /> <path class="sun-ray-two" d="M131.5,154.2c6.3,6.2,16.4,6.2,22.6,0c6.3-6.2,6.3-16.4,0-22.6l-22.6-22.6c-6.2-6.2-16.4-6.2-22.6,0 c-6.2,6.2-6.2,16.4,0,22.6L131.5,154.2z" /> <path class="sun-ray-one" d="M112,256c0-8.8-7.2-16-16-16H64c-8.8,0-16,7.2-16,16s7.2,16,16,16h32C104.8,272,112,264.8,112,256z" /> </svg>',
         wind:'<svg class="windy-cloud" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"> <g class="cloud-wrap"> <path class="cloud" d="M417,166.1c-24-24.5-57.1-38.8-91.7-38.8c-34.6,0-67.7,14.2-91.7,38.8c-52.8,2.5-95,46.2-95,99.6 c0,55,44.7,99.7,99.7,99.7c5.8,0,11.6-0.5,17.3-1.5c20.7,13.5,44.9,20.9,69.7,20.9c24.9,0,49.1-7.3,69.8-20.9 c5.7,1,11.5,1.5,17.3,1.5c54.9,0,99.6-44.7,99.6-99.7C512,212.3,469.8,168.5,417,166.1z M412.4,333.3c-8.3,0-16.4-1.5-24-4.4 c-17.5,15.2-39.8,23.8-63.1,23.8c-23.2,0-45.5-8.5-63-23.8c-7.6,2.9-15.8,4.4-24,4.4c-37.3,0-67.7-30.4-67.7-67.7 c0-37.3,30.4-67.7,67.7-67.7c3.2,0,6.4,0.2,9.5,0.7c18.1-24.6,46.5-39.4,77.5-39.4c30.9,0,59.4,14.8,77.5,39.4 c3.1-0.5,6.3-0.7,9.6-0.7c37.3,0,67.6,30.4,67.6,67.7C480,303,449.7,333.3,412.4,333.3z" /> </g> <path class="wind-three" d="M144,352H16c-8.8,0-16,7.2-16,16s7.2,16,16,16h128c8.8,0,16-7.2,16-16S152.8,352,144,352z" /> <path class="wind-two" d="M16,320h94c8.8,0,16-7.2,16-16s-7.2-16-16-16H16c-8.8,0-16,7.2-16,16S7.2,320,16,320z" /> <path class="wind-one" d="M16,256h64c8.8,0,16-7.2,16-16s-7.2-16-16-16H16c-8.8,0-16,7.2-16,16S7.2,256,16,256z" /> </svg> </div>'
     };
+
     /////////////////////////////////////////////FUNCTIONS/////////////////////////////////////////
+
     display.getWeatherFromCityName = function () {
         if(display.city.name){
             cardFly('down');
             dataFactory.weatherByCityName(display.city.name).then(function (response) {
-                console.log(response);
                 display.singleDayWeatherData = response.data;
                 placeMarker(response.data);
                 var infoContent = makeInfoWindow(display.singleDayWeatherData);
@@ -29,17 +31,21 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
                     maxWidth: 300
                 });
                 infowindow.open(map, marker);
-                console.log(infowindow.getMap());
+                display.wikiTitle = display.singleDayWeatherData.name;
+//                $scope.placeInfo = '';
+                dataFactory.wikiByCityName(display.wikiTitle).then(function (response) {
+                    var key = Object.keys(response.query.pages)[0];
+                    $scope.placeInfo = response.query.pages[key].extract;
+                    console.log($scope.placeInfo);
+                });
             });
             dataFactory.sixteenDayForecastByCityName(display.city.name).then(function (response) {
                 response.data.list.forEach(function (item) {
-                    console.log(item.temp);
                 });
-                console.table(response.data.list);
 
                 getMinMaxStacked(response.data.list);
                 cardFly('up');
-            })
+            });
         }
     };
     var makeInfoWindow = function (data) {
@@ -82,7 +88,6 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
                     showMaxMin: false,
                     ticks:list.length-5,
                     tickFormat: function(d) {
-                        console.log(new Date(d));
                         return d3.time.format('%d/%m')(new Date(d))
                     }
                 },
@@ -106,8 +111,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
       list.forEach(function (datum) {
 $scope.data[1].values.push([datum.dt*1000,datum.temp.max]);
 $scope.data[0].values.push([datum.dt*1000,datum.temp.min]);
-      })
-        console.log($scope.data)
+      });
     };
     var placeMarker = function (info) {
         if(marker) {
@@ -134,7 +138,6 @@ $scope.data[0].values.push([datum.dt*1000,datum.temp.min]);
     display.getWeatherFromGeoLocation = function (lat, lng) {
         cardFly('down');
         dataFactory.weatherByGeoLocation(lat, lng).then(function (response) {
-            console.log(response);
             display.singleDayWeatherData = response.data;
             display.city =display.singleDayWeatherData;
             var infoContent =  makeInfoWindow(display.singleDayWeatherData);
@@ -154,14 +157,17 @@ $scope.data[0].values.push([datum.dt*1000,datum.temp.min]);
     };
 display.toggleSideNav = function () {
     $('#sideNav').sidebar('toggle');
-
-    console.log("BOOYA");
 };
 var cardFly = function (text) {
     $('#chartCard')
         .transition({
             animation  : 'fly ' +text,
             duration   : '2s',
+        });
+    $('#infoCard')
+        .transition({
+            animation  : 'fly ' +text,
+            duration   : '2.3s',
         });
 }
 
@@ -184,6 +190,7 @@ var cardFly = function (text) {
         map.panTo(marker.position);
         marker.setMap(map);
     };
+  //  display.getWeatherFromCityName();
     // $timeout(function () {
     //     var input = document.getElementById('mapAutocomplete');
     //     var autocomplete = new google.maps.places.Autocomplete(input);
@@ -203,9 +210,7 @@ angular.module('Weather-Map').directive('googleplace', ['$timeout', function($ti
                 componentRestrictions: {}
             };
             $timeout(function () {
-                console.log(element[0]);
                 scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
-                console.log(scope.gPlace.getPlace());
                 google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
                     var geoComponents = scope.gPlace.getPlace();
                     var latitude = geoComponents.geometry.location.lat();
@@ -241,7 +246,6 @@ angular.module('Weather-Map').directive('googleplace', ['$timeout', function($ti
 angular.module('Weather-Map').directive('myEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
-            console.log("Ankit");
             if(event.which === 13) {
                 scope.$apply(function (){
                     scope.$eval(attrs.myEnter);
