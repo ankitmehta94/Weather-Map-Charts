@@ -18,7 +18,7 @@
   <div class="ui labeled icon left inline vertical very wide sidebar menu uncover" id="sideNav">
     <input type="text" class="inputWidth" id="mapAutocomplete" ng-model="display.city.name" googleplace />
     <button  class="ui button" ng-click="display.getWeatherFromCityName(display.city.name)" >What's The Weather Like</button>
-    <div id="chartCard" class="ui card"><nvd3 options="options" data="data"></nvd3></div>
+    <div id="chartCard" class="ui card"><nvd3 options="optionsArea" data="dataArea"></nvd3></div>
     <div id="infoCard" class="ui cards" >
       <div class="card width100cent">
         <div class="content width100cent">
@@ -26,7 +26,7 @@
           <div class="meta width100cent"><p>Wikipedia</p></div>
           <div class="description">
             <p>
-              {{placeInfo}}
+              {{placeInformation}}
           </p>
           </div>
         </div>
@@ -58,5 +58,6 @@
 <script src="src/app.js"></script>
 <script src="src/AppController.js"></script>
 <script src="src/dataFactory.js"></script>
+<script src="src/graphConfig.js"></script>
 
 </html>
