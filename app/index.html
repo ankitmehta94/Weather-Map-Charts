@@ -18,20 +18,23 @@
   <div class="ui labeled icon left inline vertical very wide sidebar menu uncover" id="sideNav">
     <input type="text" class="inputWidth" id="mapAutocomplete" ng-model="display.city.name" googleplace />
     <button  class="ui button" ng-click="display.getWeatherFromCityName(display.city.name)" >What's The Weather Like</button>
-    <div id="chartCard" class="ui card"><nvd3 options="optionsArea" data="dataArea"></nvd3></div>
-    <div id="infoCard" class="ui cards" >
-      <div class="card width100cent">
-        <div class="content width100cent">
-          <div class="header width100cent"><p>{{display.wikiTitle}}</p></div>
-          <div class="meta width100cent"><p>Wikipedia</p></div>
-          <div class="description">
-            <p>
-              {{placeInformation}}
-          </p>
-          </div>
-        </div>
-      </div>
-  </div>
+    <div id="chartCard1" class="ui card"><nvd3 options="optionsArea" data="dataArea"></nvd3></div>
+    <div id="chartCard2" class="ui card"><nvd3 options="optionsPressureLine" data="dataPressureLine"></nvd3></div>
+    <div id="chartCard3" class="ui card"><nvd3 options="optionsHumidityLine" data="dataHumidityLine"></nvd3></div>
+
+    <!--<div id="infoCard" class="ui cards" >-->
+      <!--<div class="card width100cent">-->
+        <!--<div class="content width100cent">-->
+          <!--<div class="header width100cent"><p>{{display.wikiTitle}}</p></div>-->
+          <!--<div class="meta width100cent"><p>Wikipedia</p></div>-->
+          <!--<div class="description">-->
+            <!--<p>-->
+              <!--{{placeInformation}}-->
+          <!--</p>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+  <!--</div>-->
   </div>
   <div class="pusher " style="height: 100%">
     <button  class="ui button" ng-click="display.toggleSideNav()">Toggle</button>

@@ -3,7 +3,7 @@
  */
 angular.module('Weather-Map').factory('graphConfig',[function () {
     var graphConfig = {};
-    var colors = ["002D40","E54661"];
+    var colors = ["#6bd5ff","#f9741b"];
     graphConfig.area = {
         chart: {
             type: 'stackedAreaChart',
@@ -46,42 +46,73 @@ angular.module('Weather-Map').factory('graphConfig',[function () {
             }
         }
     };
-    graphConfig.line = {
+    graphConfig.linePressure =  {
         chart: {
-            type: 'cumulativeLineChart',
+            type: 'lineChart',
             height: 450,
             margin : {
                 top: 20,
                 right: 20,
-                bottom: 60,
-                left: 65
+                bottom: 40,
+                left: 55
             },
-            x: function(d){ return d[0]; },
-            y: function(d){ return d[1]/100; },
-            average: function(d) { return d.mean/100; },
-
-            color: d3.scale.category10().range(),
-            duration: 300,
+            x: function(d){ return d.x; },
+            y: function(d){ return d.y; },
             useInteractiveGuideline: true,
-            clipVoronoi: false,
-
             xAxis: {
-                axisLabel: 'X Axis',
+                axisLabel: 'Time (day)',
+                ticks:11,
                 tickFormat: function(d) {
                     return d3.time.format('%d/%m')(new Date(d))
+                }
+            },
+            yAxis: {
+                axisLabel: 'Pressure (hPa)',
+                tickFormat: function(d){
+                    return d3.format('.02f')(d);
                 },
-                showMaxMin: false,
-                staggerLabels: true
+                axisLabelDistance: -10
             },
 
+        },
+        title: {
+            enable: true,
+            text: 'Pressure'
+        },
+    };
+    graphConfig.lineHumidity =  {
+        chart: {
+            type: 'lineChart',
+            height: 450,
+            margin : {
+                top: 20,
+                right: 20,
+                bottom: 40,
+                left: 55
+            },
+            x: function(d){ return d.x; },
+            y: function(d){ return d.y; },
+            useInteractiveGuideline: true,
+            xAxis: {
+                axisLabel: 'Time (day)',
+                ticks:11,
+                tickFormat: function(d) {
+                    return d3.time.format('%d/%m')(new Date(d))
+                }
+            },
             yAxis: {
-                axisLabel: 'Y Axis',
+                axisLabel: 'Humidity (%)',
                 tickFormat: function(d){
-                    return d3.format(',.1%')(d);
+                    return d3.format('.02f')(d);
                 },
-                axisLabelDistance: 20
-            }
-        }
+                axisLabelDistance: -10
+            },
+
+        },
+        title: {
+            enable: true,
+            text: 'Humidity'
+        },
     };
     return graphConfig;
 }]);

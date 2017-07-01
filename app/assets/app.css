@@ -46,7 +46,19 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
-#chartCard{
+#chartCard1{
+width: 99%;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+  margin-top: 2%;
+}
+#chartCard2{
+width: 99%;
+  margin-left: 0.5%;
+  margin-right: 0.5%;
+  margin-top: 2%;
+}
+#chartCard3{
 width: 99%;
   margin-left: 0.5%;
   margin-right: 0.5%;

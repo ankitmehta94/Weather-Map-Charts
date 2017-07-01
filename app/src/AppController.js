@@ -30,16 +30,17 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
                     content: infoContent,
                     maxWidth: 300
                 });
+                console.log(infowindow);
                 infowindow.open(map, marker);
                 display.wikiTitle = display.singleDayWeatherData.name;
                 dataFactory.wikiByCityName(display.wikiTitle).then(function (response) {
                     var key = Object.keys(response.query.pages)[0];
                     $scope.placeInformation = response.query.pages[key].extract;
-                    console.log($scope.placeInfo);
                 });
             });
             dataFactory.sixteenDayForecastByCityName(display.city.name).then(function (response) {
                 getMinMaxStacked(response.data.list);
+                makeLineChart(response.data.list);
                 cardFly('up');
             });
         }
@@ -50,7 +51,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
         '<span class="flex-row-start font-light">CLOUDINESS: '+data.weather[0].main+'</span>'+
         '<span class="flex-row-start font-light">HUMIDITY: '+data.main.humidity+' %</span>'+
         '<span class="flex-row-space-between font-light"><span>PRESSURE: '+data.main.pressure+' hPa</span><span>Max:  '+data.main.temp_max+' &#176 C</span></span>'+
-        '<span class="flex-row-space-between font-light"><span>TEMPERATURE: '+data.main.temp+'</span><span>Min:  '+data.main.temp_min+'&#176 C</span></span>'+
+        '<span class="flex-row-space-between font-light"><span>TEMPERATURE: '+data.main.temp+'&#176 C</span><span>Min:  '+data.main.temp_min+'&#176 C</span></span>'+
         '<span class="flex-row-start font-light">WEATHER DESCRIPTION: '+data.weather[0].description+'</span>'+
         '</div>'
         return text
@@ -60,9 +61,32 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
         dimPage: false,
         closable:false
     });
+    var makeLineChart = function(list){
+        var value = [];
+        var humidityValue = [];
+        list.forEach(function (datum) {
+           value.push({x:datum.dt*1000,y:datum.pressure});
+           humidityValue.push({x:datum.dt*1000,y:datum.humidity})
+        });
+        console.log(value);
+        $scope.optionsPressureLine = graphConfig.linePressure;
+        $scope.optionsHumidityLine = graphConfig.lineHumidity;
+
+        $scope.dataPressureLine = [{
+            values:value ,      //values - represents the array of {x,y} data points
+                key: 'Pressure', //key  - the name of the series.
+            color: '#ff7f0e',  //color - optional: choose your own line color.
+        }];
+        $scope.dataHumidityLine = [{
+            values:humidityValue ,      //values - represents the array of {x,y} data points
+                key: 'Humidity', //key  - the name of the series.
+            color: 'blue',  //color - optional: choose your own line color.
+        }];
+        // $scope.dataPressureLine = value1;
+    };
     var getMinMaxStacked = function (list) {
         console.log(graphConfig.area);
-        $scope.optionsArea = graphConfig.area
+        $scope.optionsArea = graphConfig.area;
         $scope.dataArea = [{key:"Min Temperature",values:[]},{key:"Max Temperature",values:[]}]
       list.forEach(function (datum) {
 $scope.dataArea[1].values.push([datum.dt*1000,datum.temp.max]);
@@ -101,11 +125,13 @@ $scope.dataArea[0].values.push([datum.dt*1000,datum.temp.min]);
                 content: infoContent,
                 maxWidth: 300
             });
+            console.log(infowindow);
             infowindow.open(map, marker);
 
         });
         dataFactory.sixteenDayForecastByGeoLocation(lat, lng).then(function (response) {
             getMinMaxStacked(response.data.list);
+            makeLineChart(response.data.list)
             cardFly('up');
 
         })
@@ -115,15 +141,20 @@ display.toggleSideNav = function () {
     $('#sideNav').sidebar('toggle');
 };
 var cardFly = function (text) {
-    $('#chartCard')
+    $('#chartCard1')
         .transition({
             animation  : 'fly ' +text,
             duration   : '2s',
         });
-    $('#infoCard')
+    $('#chartCard2')
         .transition({
             animation  : 'fly ' +text,
             duration   : '2.3s',
+        });
+    $('#chartCard3')
+        .transition({
+            animation  : 'fly ' +text,
+            duration   : '2.5s',
         });
 }
 
