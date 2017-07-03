@@ -43,6 +43,10 @@ angular.module('Weather-Map').factory('graphConfig',[function () {
                 horizontalOff: false,
                 verticalOff: true,
                 unzoomEventType: 'dblclick.zoom'
+            },
+            title: {
+                enable: true,
+                text: 'Minimum and Maximum Temperature'
             }
         }
     };

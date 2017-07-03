@@ -39,12 +39,27 @@
 .width100cent{
   width: 100%!important;
 }
+.textAlignCenter{
+  text-align: center;
+}
+.iconButton{
+  margin: 0 -1.2em 0 -1.1em!important;
+  font-size: 1.5em!important;
+}
 html, body {
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   height: 100%;
   margin: 0px;
   padding: 0px;
+}
+#owmLogo{
+  width: 100px;
+  height: 25px;
+  padding-top: 5%;
+}
+.navClass{
+  background-color: #84afe4;
 }
 #chartCard1{
 width: 99%;
