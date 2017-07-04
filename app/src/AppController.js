@@ -5,6 +5,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
     display.selctedNav = 'Normal';
     display.city = {name:''};
     var marker = null;
+    $scope.showGraph = false;
     $scope.placeInfo = '';
     display.singleDayWeatherData = {};
     $scope.iconClass = 'right';
@@ -44,7 +45,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
                 });
             });
             dataFactory.sixteenDayForecastByCityName(display.city.name).then(function (response) {
-                getMinMaxStacked(response.data.list);
+              //  getMinMaxStacked(response.data.list);
                 makeLineChart(response.data.list);
                 cardFly('up');
             });
@@ -78,12 +79,19 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
         }
     });
     var makeLineChart = function(list){
+        $scope.showGraph = true;
         var value = [];
         var humidityValue = [];
+        var minValue = [];
+        var maxValue =[];
         list.forEach(function (datum) {
            value.push({x:datum.dt*1000,y:datum.pressure});
            humidityValue.push({x:datum.dt*1000,y:datum.humidity})
+           minValue.push({x:datum.dt*1000,y:datum.temp.min})
+           maxValue.push({x:datum.dt*1000,y:datum.temp.max})
+
         });
+        $scope.optionsArea = graphConfig.lineMinMax;
         $scope.optionsPressureLine = graphConfig.linePressure;
         $scope.optionsHumidityLine = graphConfig.lineHumidity;
 
@@ -97,6 +105,17 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
                 key: 'Humidity', //key  - the name of the series.
             color: 'blue',  //color - optional: choose your own line color.
         }];
+        $scope.dataArea = [
+            {
+                values:minValue,
+                key:"Minimum Temperature",
+                color:"blue"
+            }, {
+                values:maxValue,
+                key:"Maximum Temperature",
+                color:"red"
+            }
+        ];
         // $scope.dataPressureLine = value1;
     };
     var getMinMaxStacked = function (list) {
@@ -145,7 +164,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
 
         });
         dataFactory.sixteenDayForecastByGeoLocation(lat, lng).then(function (response) {
-            getMinMaxStacked(response.data.list);
+           // getMinMaxStacked(response.data.list);
             makeLineChart(response.data.list)
             cardFly('up');
 

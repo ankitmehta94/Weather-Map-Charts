@@ -4,51 +4,39 @@
 angular.module('Weather-Map').factory('graphConfig',[function () {
     var graphConfig = {};
     var colors = ["#6bd5ff","#f9741b"];
-    graphConfig.area = {
+    graphConfig.lineMinMax = {
         chart: {
-            type: 'stackedAreaChart',
+            type: 'lineChart',
             height: 450,
-            color: function(d,i){
-                return (d.data && d.data.color) || colors[i % colors.length]
-            },
             margin : {
                 top: 20,
                 right: 20,
-                bottom: 30,
-                left: 40
+                bottom: 40,
+                left: 55
             },
-            x: function(d){return d[0];},
-            y: function(d){return d[1];},
-            useVoronoi: false,
-            clipEdge: true,
-            duration: 100,
+            x: function(d){ return d.x; },
+            y: function(d){ return d.y; },
             useInteractiveGuideline: true,
             xAxis: {
-                showMaxMin: false,
+                axisLabel: 'Time (day)',
                 ticks:11,
                 tickFormat: function(d) {
                     return d3.time.format('%d/%m')(new Date(d))
                 }
             },
             yAxis: {
-                tickFormat: function(d){
-                    return d3.format(',.2f')(d);
-                }
+                axisLabel: 'Temperature (C) ',
+                // tickFormat: function(d){
+                //     return d3.format('')(d);
+                // },
+                axisLabelDistance: -10
             },
-            zoom: {
-                enabled: true,
-                scaleExtent: [1, 10],
-                useFixedDomain: false,
-                useNiceScale: false,
-                horizontalOff: false,
-                verticalOff: true,
-                unzoomEventType: 'dblclick.zoom'
-            },
-            title: {
-                enable: true,
-                text: 'Minimum and Maximum Temperature'
-            }
-        }
+
+        },
+        title: {
+            enable: true,
+            text: 'Pressure'
+        },
     };
     graphConfig.linePressure =  {
         chart: {
@@ -72,9 +60,9 @@ angular.module('Weather-Map').factory('graphConfig',[function () {
             },
             yAxis: {
                 axisLabel: 'Pressure (hPa)',
-                tickFormat: function(d){
-                    return d3.format('.02f')(d);
-                },
+                // tickFormat: function(d){
+                //     return d3.format('')(d);
+                // },
                 axisLabelDistance: -10
             },
 
@@ -106,9 +94,9 @@ angular.module('Weather-Map').factory('graphConfig',[function () {
             },
             yAxis: {
                 axisLabel: 'Humidity (%)',
-                tickFormat: function(d){
-                    return d3.format('.02f')(d);
-                },
+                // tickFormat: function(d){
+                //     return d3.format('.0%')(d);
+                // },
                 axisLabelDistance: -10
             },
 
