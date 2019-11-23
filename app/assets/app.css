@@ -61,6 +61,12 @@ html, body {
 .navClass{
   background-color: #84afe4;
 }
+.hideClass {
+  display:none!important;
+}
+.buttonDiv{
+  margin-top: 2%;
+}
 #chartCard1{
 width: 99%;
   margin-left: 0.5%;
@@ -81,8 +87,11 @@ width: 99%;
 }
 #infoCard{
 width: 99%;
-  height: 100%;
+margin-left: 0.5%;
+margin-right: 0.5%;
+  /* height: 100%; */
   margin-top: 2%;
+  margin-bottom: 2%;
 }
 /* Toolbar area */
 .ui[class*="very wide"].left.sidebar, .ui[class*="very wide"].right.sidebar{

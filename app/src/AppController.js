@@ -1,3 +1,11 @@
+/**
+ * TODO: fix for developers only error
+ * TODO: fix setComponentRestrictions error
+ * TODO: Add loader for geo location
+ * TODO: Add Error Handling for geolocation 
+ * TODO: Improve toggle functionality
+ */
+
 angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$rootScope','$timeout','dataFactory','graphConfig', function ($scope, $rootScope,$timeout,dataFactory,graphConfig) {
     /////////////////////////////////////////////VARIABLES/////////////////////////////////////////
     var display = this;
@@ -5,6 +13,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
     display.selctedNav = 'Normal';
     display.city = {name:''};
     var marker = null;
+    display.firstTimeData = false;
     $scope.showGraph = false;
     $scope.placeInfo = '';
     display.singleDayWeatherData = {};
@@ -23,12 +32,31 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
     var chartCard1 = $('#chartCard1');
     var chartCard2 = $('#chartCard2');
     var chartCard3 = $('#chartCard3');
+    /////////////////////////////////////////////Set Marker On Map/////////////////////////////////////////
+    const getGeoLocationOfUser = () => {
+        if('geolocation' in navigator){
+            navigator.geolocation.getCurrentPosition((position) => {
+                if(position.coords){
+                    const markerInfo = {
+                        coord: {
+                            lat:position.coords.latitude,
+                            lon: position.coords.longitude,
+                        }
+                    }
+                    display.getWeatherFromGeoLocation(position.coords.latitude, position.coords.longitude)
+                    placeMarker(markerInfo);
+                }
+            });
+        }
+    }
+    getGeoLocationOfUser();
     /////////////////////////////////////////////FUNCTIONS/////////////////////////////////////////
 
     display.getWeatherFromCityName = function () {
         if(display.city.name){
             cardFly('down');
             dataFactory.weatherByCityName(display.city.name).then(function (response) {
+                display.firstTimeData = true;
                 display.singleDayWeatherData = response.data;
                 placeMarker(response.data);
                 var infoContent = makeInfoWindow(display.singleDayWeatherData);
@@ -40,8 +68,12 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
                 infowindow.open(map, marker);
                 display.wikiTitle = display.singleDayWeatherData.name;
                 dataFactory.wikiByCityName(display.wikiTitle).then(function (response) {
+                    console.log(response, '<--------------------------------response')
                     var key = Object.keys(response.query.pages)[0];
                     $scope.placeInformation = response.query.pages[key].extract;
+                    display.placeInformation = response.query.pages[key].extract;
+                    $scope.$apply();
+                    console.log($scope.placeInformation, '<--------------------------------placeInformation')
                 });
             });
             dataFactory.sixteenDayForecastByCityName(display.city.name).then(function (response) {
@@ -52,9 +84,10 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
         }
     };
     var makeInfoWindow = function (data) {
+        const weatherIcon = (iconObj[data.weather[0].main]?iconObj[data.weather[0].main]:'');
         var text = '<div class="info-box night-colors">'+
         '<span class="font-heavy textAlignCenter">I AM DRAGGABLE</span>'+
-        '<span class="flex-row-space-between font-heavy" >'+data.name+', '+data.sys.country+iconObj[data.weather[0].main]+'</span>'+
+        '<span class="flex-row-space-between font-heavy" >'+data.name+', '+data.sys.country+weatherIcon+'</span>'+
         '<span class="flex-row-start font-light">CLOUDINESS: '+data.weather[0].main+'</span>'+
         '<span class="flex-row-start font-light">HUMIDITY: '+data.main.humidity+' %</span>'+
         '<span class="flex-row-space-between font-light"><span>PRESSURE: '+data.main.pressure+' hPa</span><span>Max:  '+data.main.temp_max+' &#176 C</span></span>'+
@@ -131,6 +164,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
         if(marker) {
             marker.setMap(null);
         }
+        console.log(info, '<--------------------------------info')
         marker = new google.maps.Marker({
             map: map,
             draggable: true,
@@ -152,6 +186,7 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
     display.getWeatherFromGeoLocation = function (lat, lng) {
         cardFly('down');
         dataFactory.weatherByGeoLocation(lat, lng).then(function (response) {
+            display.firstTimeData = true;
             display.singleDayWeatherData = response.data;
             display.city =display.singleDayWeatherData;
             var infoContent =  makeInfoWindow(display.singleDayWeatherData);
@@ -159,7 +194,13 @@ angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$ro
                 content: infoContent,
                 maxWidth: 300
             });
-            console.log(infowindow);
+            console.log(display.city);
+            dataFactory.wikiByCityName(display.city.name).then(function (response) {
+                var key = Object.keys(response.query.pages)[0];
+                // $scope.placeInformation = response.query.pages[key].extract;
+                display.placeInformation = response.query.pages[key].extract;
+                $scope.$apply();
+            });
             infowindow.open(map, marker);
 
         });
@@ -228,6 +269,7 @@ angular.module('Weather-Map').directive('googleplace', ['$timeout', function($ti
                 componentRestrictions: {}
             };
             $timeout(function () {
+                
                 scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
                 google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
                     var geoComponents = scope.gPlace.getPlace();
