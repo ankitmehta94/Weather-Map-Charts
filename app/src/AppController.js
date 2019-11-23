@@ -4,6 +4,7 @@
  * TODO: Add loader for geo location
  * TODO: Add Error Handling for geolocation 
  * TODO: Improve toggle functionality
+ * TODO: Add Big Query Analytics (https://firebase.google.com/docs/analytics/events)(https://support.google.com/firebase/answer/6318765?hl=en)
  */
 
 angular.module('Weather-Map').controller('MapDisplayController', ['$scope', '$rootScope','$timeout','dataFactory','graphConfig', function ($scope, $rootScope,$timeout,dataFactory,graphConfig) {
